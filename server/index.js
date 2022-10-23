@@ -39,8 +39,8 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log(`User has left room.`);
     const user = removeUser(socket.id);
+    console.log(`User: '${user.name}' has left room.`);
     notifyClientsRoomUpdate(user.room);
   });
 });
