@@ -6,7 +6,7 @@ const cors = require("cors");
 const PORT = process.env.PORT || 5000;
 
 const router = require("./router");
-const { addUser, getUsersInRoom, removeUser } = require("./users");
+const { addUser, getUsersInRoom, removeUser, updateUser } = require("./users");
 
 const app = express();
 const server = http.createServer(app);
@@ -18,10 +18,10 @@ const io = socketio(server, {
 });
 
 io.on("connection", (socket) => {
-  socket.on("join", ({ name, room }, callback) => {
+  socket.on("join", ({ name, room, vote }, callback) => {
     console.log(`User ${name}, has request to join room ${room}`);
 
-    const { error, user } = addUser({ id: socket.id, name, room });
+    const { error, user } = addUser({ id: socket.id, name, room, vote });
 
     if (error) return callback(error);
 
@@ -31,6 +31,11 @@ io.on("connection", (socket) => {
     notifyClientsRoomUpdate(user.room);
 
     callback();
+  });
+
+  socket.on("updateUserData", ({ user }) => {
+    updateUser(user);
+    notifyClientsRoomUpdate(user.room);
   });
 
   socket.on("disconnect", () => {

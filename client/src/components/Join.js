@@ -13,7 +13,7 @@ const Join = ({ userTaken }) => {
       event.preventDefault();
       return;
     }
-    navigate(`/chat?name=${name}&room=${room}`);
+    navigate(`/room?name=${name}&room=${room}`);
   };
 
   return (
