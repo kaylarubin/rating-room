@@ -19,7 +19,7 @@ const Join = ({ userTaken }) => {
   return (
     <div className="joinOuterContainer">
       <div className="joinInnerContainer">
-        <h1 className="heading">Join</h1>
+        <h1 className="heading">Join Room</h1>
         {userTaken ? (
           <div className="userTakenError">
             Name is already taken for that room.
