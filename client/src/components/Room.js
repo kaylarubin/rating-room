@@ -4,8 +4,7 @@ import { UNSAFE_NavigationContext, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 
 const ENDPOINT = "http://localhost:5000";
-
-let socket = io(ENDPOINT);
+let socket;
 
 const scoreOptions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const INITIAL_VOTE = 0;
@@ -20,6 +19,9 @@ const Room = () => {
 
   useEffect(() => {
     if (initialMount.current) {
+      //initialize socket endpoint
+      socket = io(ENDPOINT);
+
       let { name, room } = queryString.parse(window.location.search);
       setRoom(room);
       setName(name);

@@ -19,7 +19,7 @@ const io = socketio(server, {
 
 io.on("connection", (socket) => {
   socket.on("join", ({ name, room, vote }, callback) => {
-    console.log(`User ${name}, has request to join room ${room}`);
+    console.log(`User '${name}', has request to join room '${room}'`);
 
     const { error, user } = addUser({ id: socket.id, name, room, vote });
 
@@ -28,6 +28,7 @@ io.on("connection", (socket) => {
     //Call join to subscribe the socket to a given channel
     socket.join(user.room);
 
+    //Notify all users in room of new room data
     notifyClientsRoomUpdate(user.room);
 
     callback();
@@ -40,8 +41,10 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     const user = removeUser(socket.id);
-    console.log(`User: '${user.name}' has left room.`);
-    notifyClientsRoomUpdate(user.room);
+    if (user) {
+      console.log(`User '${user.name}', has left room '${user.room}'`);
+      notifyClientsRoomUpdate(user.room);
+    }
   });
 });
 
