@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import queryString from "query-string";
-import { UNSAFE_NavigationContext, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
+import "../styles/Room.css";
 
 const ENDPOINT = "http://localhost:5000";
 let socket;
@@ -60,12 +61,22 @@ const Room = () => {
       <div>
         <div>{`Vote: ${room}`}</div>
         <div>{`User: ${name}`}</div>
-        <h1>All Users:</h1>
-        {roomData.users.map((user) => {
-          return (
-            <div key={user.id}>{`name: ${user.name}, vote: ${user.vote}`}</div>
-          );
-        })}
+        <h3>All Users:</h3>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Vote</th>
+          </tr>
+          {roomData.users.map((user) => {
+            return (
+              <tr key={user.id}>
+                <td>{user.name}</td>
+                <td>{user.vote}</td>
+              </tr>
+            );
+          })}
+        </table>
+
         {scoreOptions.map((option) => {
           return (
             <button key={option} onClick={() => updateUserVote(option)}>
