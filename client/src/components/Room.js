@@ -3,6 +3,7 @@ import queryString from "query-string";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import "../styles/Room.css";
+import audioFileOne from "../resources/sound/one.mp3";
 
 const ENDPOINT = "http://localhost:5000";
 let socket;
@@ -17,6 +18,16 @@ const Room = () => {
   const initialMount = useRef(true);
 
   const navigate = useNavigate();
+
+  const audio = new Audio();
+
+  function handlePlaySound() {
+    socket.emit("play", {
+      room: room,
+      name: "one",
+      path: audioFileOne,
+    });
+  }
 
   useEffect(() => {
     if (initialMount.current) {
@@ -35,6 +46,11 @@ const Room = () => {
 
       socket.on("roomData", (data) => {
         setRoomData(data);
+      });
+
+      socket.on("play", ({ name, path }) => {
+        audio.src = path;
+        audio.play();
       });
 
       //On back button
@@ -85,6 +101,8 @@ const Room = () => {
           );
         })}
       </div>
+
+      <button onClick={handlePlaySound}>Play sound</button>
     </>
   );
 };

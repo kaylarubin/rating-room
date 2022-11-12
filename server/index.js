@@ -39,6 +39,13 @@ io.on("connection", (socket) => {
     notifyClientsRoomUpdate(user.room);
   });
 
+  socket.on("play", ({ room, name, path }) => {
+    io.to(room).emit("play", {
+      name: name,
+      path: path,
+    });
+  });
+
   socket.on("disconnect", () => {
     const user = removeUser(socket.id);
     if (user) {
