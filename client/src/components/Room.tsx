@@ -157,20 +157,22 @@ const Room = () => {
             );
           })}
         </table>
-
-        {ScoreOptions.map((option) => {
-          return (
-            <button
-              key={option}
-              onClick={() => {
-                updateUserVote(option);
-                handlePlaySound(option);
-              }}
-            >
-              {option}
-            </button>
-          );
-        })}
+        <div className="Room__score-button-container">
+          {ScoreOptions.map((option) => {
+            return (
+              <button
+                className="Room__score-button"
+                key={option}
+                onClick={() => {
+                  updateUserVote(option);
+                  handlePlaySound(option);
+                }}
+              >
+                {option}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </>
   );
