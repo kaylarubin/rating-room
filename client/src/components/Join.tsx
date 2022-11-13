@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Join.css";
 
-const Join = ({ userTaken }) => {
+interface JoinProps {
+  userTaken: boolean;
+}
+
+const Join: React.FC<JoinProps> = ({ userTaken }) => {
   const [name, setName] = useState("");
   const [room, setRoom] = useState("");
 
   const navigate = useNavigate();
 
-  const joinRoom = (event) => {
+  const joinRoom = (event?: React.KeyboardEvent<HTMLInputElement>) => {
     if (!name || !room) {
-      event.preventDefault();
+      if (event) event.preventDefault();
       return;
     }
-    navigate(`/room?name=${name}&room=${room}`);
+    navigate(`/room/${name}/${room}`);
   };
 
   return (
@@ -48,7 +52,13 @@ const Join = ({ userTaken }) => {
             }
           />
         </div>
-        <button className={"button mt-20"} type="submit" onClick={joinRoom}>
+        <button
+          className={"button mt-20"}
+          type="submit"
+          onClick={() => {
+            joinRoom();
+          }}
+        >
           Sign In
         </button>
       </div>

@@ -9,7 +9,10 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Join userTaken={false} />} />
         <Route path="/userTaken" element={<Join userTaken={true} />} />
-        <Route path="/room" element={<Room />} />
+        <Route path="/room">
+          <Route index element={<Room />} />
+          <Route path=":userName/:userRoom" element={<Room />} />
+        </Route>
       </Routes>
     </Router>
   );
