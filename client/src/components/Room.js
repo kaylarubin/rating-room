@@ -3,12 +3,36 @@ import queryString from "query-string";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import "../styles/Room.css";
+
+import audioFileZero from "../resources/sound/zero.mp3";
 import audioFileOne from "../resources/sound/one.mp3";
+import audioFileTwo from "../resources/sound/two.mp3";
+import audioFileThree from "../resources/sound/three.mp3";
+import audioFileFour from "../resources/sound/four.mp3";
+import audioFileFive from "../resources/sound/five.mp3";
+import audioFileSix from "../resources/sound/six.mp3";
+import audioFileSeven from "../resources/sound/seven.mp3";
+import audioFileEight from "../resources/sound/eight.mp3";
+import audioFileNine from "../resources/sound/nine.mp3";
+import audioFileTen from "../resources/sound/ten.mp3";
 
 const ENDPOINT = "http://localhost:5000";
 let socket;
 
 const scoreOptions = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const audioFiles = {
+  0: audioFileZero,
+  1: audioFileOne,
+  2: audioFileTwo,
+  3: audioFileThree,
+  4: audioFileFour,
+  5: audioFileFive,
+  6: audioFileSix,
+  7: audioFileSeven,
+  8: audioFileEight,
+  9: audioFileNine,
+  10: audioFileTen,
+};
 const INITIAL_VOTE = 0;
 
 const Room = () => {
@@ -19,13 +43,10 @@ const Room = () => {
 
   const navigate = useNavigate();
 
-  const audio = new Audio();
-
-  function handlePlaySound() {
+  function handlePlaySound(score) {
     socket.emit("play", {
       room: room,
-      name: "one",
-      path: audioFileOne,
+      path: audioFiles[score],
     });
   }
 
@@ -48,9 +69,8 @@ const Room = () => {
         setRoomData(data);
       });
 
-      socket.on("play", ({ name, path }) => {
-        audio.src = path;
-        audio.play();
+      socket.on("play", ({ path }) => {
+        new Audio(path).play();
       });
 
       //On back button
@@ -95,14 +115,18 @@ const Room = () => {
 
         {scoreOptions.map((option) => {
           return (
-            <button key={option} onClick={() => updateUserVote(option)}>
+            <button
+              key={option}
+              onClick={() => {
+                updateUserVote(option);
+                handlePlaySound(option);
+              }}
+            >
               {option}
             </button>
           );
         })}
       </div>
-
-      <button onClick={handlePlaySound}>Play sound</button>
     </>
   );
 };

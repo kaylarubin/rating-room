@@ -39,9 +39,8 @@ io.on("connection", (socket) => {
     notifyClientsRoomUpdate(user.room);
   });
 
-  socket.on("play", ({ room, name, path }) => {
+  socket.on("play", ({ room, path }) => {
     io.to(room).emit("play", {
-      name: name,
       path: path,
     });
   });
