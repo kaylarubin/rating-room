@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import "../styles/Room.css";
+import testIcon from "../assets/jpg/18-waze.jpg";
 
 import audioFileZero from "../assets/audio/zero.mp3";
 import audioFileOne from "../assets/audio/one.mp3";
@@ -139,7 +140,19 @@ const Room = () => {
 
   return (
     <>
-      <div>
+      <div className="Room__container">
+        <div className="Room__title-bar">
+          <div className="Room__title-section">
+            <h1 className="Room__vote-title-text">Vote</h1>
+            <p className="Room__room-title-text">{room}</p>
+          </div>
+          <div className="Room__user-info">
+            <p className="Room__user-info-name">{name}</p>
+            <img className="Room__user-info-icon" src={testIcon} />
+          </div>
+        </div>
+      </div>
+      {/* <div>
         <div>{`Vote: ${room}`}</div>
         <div>{`User: ${name}`}</div>
         <h3>All Users:</h3>
@@ -173,7 +186,7 @@ const Room = () => {
             );
           })}
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
