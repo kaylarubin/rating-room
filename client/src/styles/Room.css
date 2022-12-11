@@ -21,9 +21,5 @@ table {
   }
 
   .Room__score-button-container{
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    width:80vw;
     margin-top:2rem;
   }
