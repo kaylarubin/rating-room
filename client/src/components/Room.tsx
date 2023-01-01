@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import "../styles/Room.css";
-import testIcon from "../assets/jpg/18-waze.jpg";
 
 import audioFileZero from "../assets/audio/zero.mp3";
 import audioFileOne from "../assets/audio/one.mp3";
@@ -15,6 +14,7 @@ import audioFileSeven from "../assets/audio/seven.mp3";
 import audioFileEight from "../assets/audio/eight.mp3";
 import audioFileNine from "../assets/audio/nine.mp3";
 import audioFileTen from "../assets/audio/ten.mp3";
+import { TitleBar } from "./TitleBar";
 
 enum Score {
   zero = 0,
@@ -72,9 +72,9 @@ interface RoomData {
   users: User[];
 }
 
-const Room = () => {
-  const [name, setName] = useState<string | null>(null);
-  const [room, setRoom] = useState<string | null>(null);
+const Room: React.FC = () => {
+  const [name, setName] = useState<string>("");
+  const [room, setRoom] = useState<string>("");
   const [roomData, setRoomData] = useState<RoomData>({ users: [], room: "" });
   const initialMount = useRef(true);
   const { userName, userRoom } = useParams();
@@ -93,8 +93,8 @@ const Room = () => {
       //initialize socket endpoint
       socket = io(ENDPOINT);
 
-      setName(userName ?? null);
-      setRoom(userRoom ?? null);
+      setName(userName ?? "");
+      setRoom(userRoom ?? "");
 
       socket.on("roomData", (data) => {
         setRoomData(data);
@@ -141,16 +141,7 @@ const Room = () => {
   return (
     <>
       <div className="Room__container">
-        <div className="Room__title-bar">
-          <div className="Room__title-section">
-            <h1 className="Room__vote-title-text">Vote</h1>
-            <p className="Room__room-title-text">{room}</p>
-          </div>
-          <div className="Room__user-info">
-            <p className="Room__user-info-name">{name}</p>
-            <img className="Room__user-info-icon" src={testIcon} />
-          </div>
-        </div>
+        <TitleBar room={room} name={name} />
       </div>
       {/* <div>
         <div>{`Vote: ${room}`}</div>
