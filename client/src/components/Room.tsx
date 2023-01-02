@@ -16,38 +16,37 @@ import audioFileNine from "../assets/audio/nine.mp3";
 import audioFileTen from "../assets/audio/ten.mp3";
 import { TitleBar } from "./TitleBar";
 import { RatingsTable } from "./RatingsTable";
-import { User } from "../TypeDefinitions";
+import { Score, User } from "../TypeDefinitions";
+import { RatingsBar } from "./RatingsBar";
+import { ScoreOptions } from "../Constants";
 
-enum Score {
-  zero = 0,
-  one = 1,
-  two = 2,
-  three = 3,
-  four = 4,
-  five = 5,
-  six = 6,
-  seven = 7,
-  eight = 8,
-  nine = 9,
-  ten = 10,
-}
+const users: User[] = [
+  { id: 0, name: "kimmy", room: "kay", vote: 0 },
+  { id: 0, name: "kimbop", room: "kay", vote: 1 },
+  { id: 0, name: "curry", room: "kay", vote: 5 },
+  { id: 0, name: "lemon-cello", room: "kay", vote: 6 },
+  { id: 0, name: "ChickenTendiesss", room: "kay", vote: 8 },
+  { id: 0, name: "DopamineKilla", room: "kay", vote: 3 },
+  { id: 0, name: "kimmy", room: "kay", vote: 0 },
+  { id: 0, name: "kimbop", room: "kay", vote: 1 },
+  { id: 0, name: "curry", room: "kay", vote: 5 },
+  { id: 0, name: "lemon-cello", room: "kay", vote: 6 },
+  { id: 0, name: "ChickenTendiesss", room: "kay", vote: 8 },
+  { id: 0, name: "DopamineKilla", room: "kay", vote: 3 },
+];
+
+const calculateAverageScore = (users: User[]) => {
+  const totalUsers = users.length;
+  const scoresSum = users.reduce(function (acc, obj) {
+    return acc + obj.vote;
+  }, 0);
+  return Math.floor(scoresSum / totalUsers);
+};
 
 const ENDPOINT = "http://localhost:5000";
 const INITIAL_VOTE = 0;
 let socket: Socket;
-const ScoreOptions: Score[] = [
-  Score.zero,
-  Score.one,
-  Score.two,
-  Score.three,
-  Score.four,
-  Score.five,
-  Score.six,
-  Score.seven,
-  Score.eight,
-  Score.nine,
-  Score.ten,
-];
+
 const AudioFiles = {
   [Score.zero]: audioFileZero,
   [Score.one]: audioFileOne,
@@ -135,9 +134,27 @@ const Room: React.FC = () => {
 
   return (
     <>
-      <div className="Room__container">
+      <div className="Room__container" id="room">
         <TitleBar room={room} name={name} />
-        <RatingsTable />
+        <RatingsTable users={users} />
+        <div className="Room__average-score-bar">
+          <RatingsBar label={"Average"} score={calculateAverageScore(users)} />
+        </div>
+        <div className="Room__voting-button-grid-wrap">
+          <div className="Room__voting-buttons-container">
+            {ScoreOptions.map((option) => {
+              return (
+                <button
+                  className="Room__score-button"
+                  key={option}
+                  onClick={() => {}}
+                >
+                  {option}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
       {/* <div>
         <div>{`Vote: ${room}`}</div>

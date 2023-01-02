@@ -1,10 +1,10 @@
-.RatingsTable__first-container {
+.RatingsTable__parent-container {
   display: flex;
   justify-content: center;
   height: 60vh;
 }
 
-.RatingsTable__second-container {
+.RatingsTable__child-container {
   display: flex;
   flex-direction: column;
   height: 100%;

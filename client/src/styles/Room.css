@@ -1,18 +1,63 @@
+/* ===== Custom Room Scrollbar ===== */
+
+/* Chrome, Edge, and Safari */
+#room::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #ffffff00;
+}
+
+#room::-webkit-scrollbar {
+  width: 12px;
+  background-color: #ffffff00;
+}
+
+#room::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #4dc399;
+}
+
+/*==============================*/
+
 .Room__container {
   height: 100%;
   position: absolute;
   left: 0;
   width: 100%;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   background-color: #1e1e1e;
+  /* Firefox */
+  scrollbar-width: auto;
+  scrollbar-color: #4dc399 #ffffff00;
+}
+.Room__voting-button-grid-wrap {
+  display: flex;
+  justify-content: center;
 }
 
 .Room__score-button {
-  width: 3rem;
-  height: 3rem;
-  margin: 0.1rem;
+  width: 7rem;
+  height: 7rem;
+  background-color: #1e1e1e;
+  border: 2px #4dc399 solid;
+  font-size: 3rem;
+  margin: 1rem;
+  border-radius: 50%;
+  color: white;
+  cursor: pointer;
 }
 
-.Room__score-button-container {
-  margin-top: 2rem;
+.Room__score-button:hover {
+  background-color: #242424;
+  border: 2px #59e2b2 solid;
+  box-shadow: 0px 0px 9px 0px #59e2b2;
+}
+
+.Room__average-score-bar {
+  padding-top: 2rem;
+  display: flex;
+  margin-right: 2rem;
+  justify-content: center;
 }
