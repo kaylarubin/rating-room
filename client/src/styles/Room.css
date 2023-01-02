@@ -1,22 +1,9 @@
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 80%;
-}
-
-td,
-th {
-  border: 1px solid #766262;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-
 .Room__container {
-  height: 100vh;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
   background-color: #1e1e1e;
 }
 
