@@ -1,5 +1,8 @@
 .RatingBar__container {
   display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  width: 50vw;
 }
 .RatingBar__base-bar {
   height: 2rem;
@@ -7,8 +10,11 @@
 }
 
 .RatingBar__outer-bar {
-  width: 40vw;
+  width: 50vw;
+  grid-column-start: 1;
   background-color: white;
+  display: flex;
+  align-self: center;
 }
 
 .RatingBar__inner-bar {
@@ -17,8 +23,17 @@
 
 .RatingBar__username {
   color: white;
+  display: flex;
+  align-items: flex-end;
+  font-size: 24px;
+  margin-left: 1rem;
+  font-family: "Montserrat";
 }
 
 .RatingBar__score {
   color: white;
+  display: flex;
+  align-items: center;
+  font-size: 2.5rem;
+  margin-left: 1rem;
 }
