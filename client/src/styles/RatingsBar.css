@@ -1,0 +1,24 @@
+.RatingBar__container {
+  display: grid;
+}
+.RatingBar__base-bar {
+  height: 2rem;
+  border-radius: 1rem;
+}
+
+.RatingBar__outer-bar {
+  width: 40vw;
+  background-color: white;
+}
+
+.RatingBar__inner-bar {
+  background-color: rgb(28, 163, 73);
+}
+
+.RatingBar__username {
+  color: white;
+}
+
+.RatingBar__score {
+  color: white;
+}

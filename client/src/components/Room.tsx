@@ -15,6 +15,8 @@ import audioFileEight from "../assets/audio/eight.mp3";
 import audioFileNine from "../assets/audio/nine.mp3";
 import audioFileTen from "../assets/audio/ten.mp3";
 import { TitleBar } from "./TitleBar";
+import { RatingsTable } from "./RatingsTable";
+import { User } from "../TypeDefinitions";
 
 enum Score {
   zero = 0,
@@ -59,13 +61,6 @@ const AudioFiles = {
   [Score.nine]: audioFileNine,
   [Score.ten]: audioFileTen,
 };
-
-interface User {
-  id: number;
-  name: string;
-  room: string;
-  vote: number;
-}
 
 interface RoomData {
   room: string;
@@ -142,6 +137,7 @@ const Room: React.FC = () => {
     <>
       <div className="Room__container">
         <TitleBar room={room} name={name} />
+        <RatingsTable />
       </div>
       {/* <div>
         <div>{`Vote: ${room}`}</div>
