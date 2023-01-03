@@ -134,11 +134,15 @@ const Room: React.FC = () => {
 
   return (
     <>
-      <div className="Room__container" id="room">
+      <div className="Room__container">
         <TitleBar room={room} name={name} />
         <RatingsTable users={users} />
         <div className="Room__average-score-bar">
-          <RatingsBar label={"Average"} score={calculateAverageScore(users)} />
+          <RatingsBar
+            label={"Average"}
+            score={calculateAverageScore(users)}
+            barColor={"#4dc399"}
+          />
         </div>
         <div className="Room__voting-button-grid-wrap">
           <div className="Room__voting-buttons-container">

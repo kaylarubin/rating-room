@@ -9,7 +9,10 @@ interface Props {
 export const RatingsTable: React.FC<Props> = (props) => {
   return (
     <div className="RatingsTable__parent-container">
-      <div className="RatingsTable__child-container">
+      <div
+        className="RatingsTable__child-container"
+        id="ratings-table-scroll-area"
+      >
         {props.users.map((user) => {
           return <UserRow user={user} />;
         })}

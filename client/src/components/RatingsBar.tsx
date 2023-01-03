@@ -11,6 +11,7 @@ const calculatePercentFromScore = (vote: number) => {
 interface Props {
   label: string;
   score: number;
+  barColor?: string;
 }
 
 export const RatingsBar: React.FC<Props> = (props) => {
@@ -20,7 +21,10 @@ export const RatingsBar: React.FC<Props> = (props) => {
       <div className="RatingBar__outer-bar RatingBar__base-bar">
         <div
           className="RatingBar__inner-bar RatingBar__base-bar"
-          style={{ width: calculatePercentFromScore(props.score) }}
+          style={{
+            width: calculatePercentFromScore(props.score),
+            backgroundColor: props.barColor,
+          }}
         ></div>
       </div>
       <div className="RatingBar__score">{props.score}</div>
