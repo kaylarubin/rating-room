@@ -12,7 +12,7 @@
 .RatingBar__outer-bar {
   width: 50vw;
   grid-column-start: 1;
-  background-color: white;
+  background-color: #0a0909;
   display: flex;
   align-self: center;
 }

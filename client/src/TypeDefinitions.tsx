@@ -3,6 +3,7 @@ export interface User {
   name: string;
   room: string;
   vote: number;
+  icon: string;
 }
 
 export enum Score {
