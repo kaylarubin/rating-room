@@ -103,7 +103,6 @@ const Room: React.FC = () => {
       window.onpopstate = () => {
         socket.disconnect();
       };
-
       return () => {
         initialMount.current = false;
       };

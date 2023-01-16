@@ -14,7 +14,7 @@ export const RatingsTable: React.FC<Props> = (props) => {
         id="ratings-table-scroll-area"
       >
         {props.users.map((user) => {
-          return <UserRow user={user} />;
+          return <UserRow key={user.id} user={user} />;
         })}
       </div>
     </div>
