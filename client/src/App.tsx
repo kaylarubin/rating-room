@@ -1,19 +1,23 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useState } from "react";
+import { io } from "socket.io-client";
 import Join from "./components/Join";
 import Room from "./components/Room";
+import { ENDPOINT } from "./Constants";
+import { JoinData } from "./TypeDefinitions";
+
+const socket = io(ENDPOINT);
 
 const App = () => {
+  const [joinData, setJoinData] = useState<JoinData>();
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Join userTaken={false} />} />
-        <Route path="/userTaken" element={<Join userTaken={true} />} />
-        <Route path="/room">
-          <Route index element={<Room />} />
-          <Route path=":userName/:userRoom" element={<Room />} />
-        </Route>
-      </Routes>
-    </Router>
+    <>
+      {joinData === undefined ? (
+        <Join setJoinData={setJoinData} socket={socket} />
+      ) : (
+        <Room joinData={joinData} socket={socket} />
+      )}
+    </>
   );
 };
 export default App;

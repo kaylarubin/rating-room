@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { io, Socket } from "socket.io-client";
-import testIcon from "../assets/jpg/18-waze.jpg";
+import { Socket } from "socket.io-client";
 import "../styles/Room.css";
 
 import audioFileZero from "../assets/audio/zero.mp3";
@@ -17,24 +15,9 @@ import audioFileNine from "../assets/audio/nine.mp3";
 import audioFileTen from "../assets/audio/ten.mp3";
 import { TitleBar } from "./TitleBar";
 import { RatingsTable } from "./RatingsTable";
-import { Score, User } from "../TypeDefinitions";
+import { Score, User, RoomData, JoinData } from "../TypeDefinitions";
 import { RatingsBar } from "./RatingsBar";
-import { ScoreOptions } from "../Constants";
-
-const users: User[] = [
-  { id: 0, name: "kimmy", room: "kay", vote: 0, icon: testIcon },
-  { id: 0, name: "kimbop", room: "kay", vote: 1, icon: testIcon },
-  { id: 0, name: "curry", room: "kay", vote: 5, icon: testIcon },
-  { id: 0, name: "lemon-cello", room: "kay", vote: 6, icon: testIcon },
-  { id: 0, name: "ChickenTendiesss", room: "kay", vote: 8, icon: testIcon },
-  { id: 0, name: "DopamineKilla", room: "kay", vote: 3, icon: testIcon },
-  { id: 0, name: "kimmy", room: "kay", vote: 0, icon: testIcon },
-  { id: 0, name: "kimbop", room: "kay", vote: 1, icon: testIcon },
-  { id: 0, name: "curry", room: "kay", vote: 5, icon: testIcon },
-  { id: 0, name: "lemon-cello", room: "kay", vote: 6, icon: testIcon },
-  { id: 0, name: "ChickenTendiesss", room: "kay", vote: 8, icon: testIcon },
-  { id: 0, name: "DopamineKilla", room: "kay", vote: 3, icon: testIcon },
-];
+import { APP_ACCENT_COLOR, ScoreOptions } from "../Constants";
 
 const calculateAverageScore = (users: User[]) => {
   const totalUsers = users.length;
@@ -43,10 +26,6 @@ const calculateAverageScore = (users: User[]) => {
   }, 0);
   return Math.floor(scoresSum / totalUsers);
 };
-
-const ENDPOINT = "http://localhost:5000";
-const INITIAL_VOTE = 0;
-let socket: Socket;
 
 const AudioFiles = {
   [Score.zero]: audioFileZero,
@@ -62,86 +41,61 @@ const AudioFiles = {
   [Score.ten]: audioFileTen,
 };
 
-interface RoomData {
-  room: string;
-  users: User[];
+interface Props {
+  joinData: JoinData;
+  socket: Socket;
 }
 
-const Room: React.FC = () => {
-  const [name, setName] = useState<string>("");
-  const [room, setRoom] = useState<string>("");
-  const [roomData, setRoomData] = useState<RoomData>({ users: [], room: "" });
+const Room: React.FC<Props> = (props) => {
+  const [roomData, setRoomData] = useState<RoomData>(props.joinData.roomData);
   const initialMount = useRef(true);
-  const { userName, userRoom } = useParams();
-
-  const navigate = useNavigate();
 
   const handlePlaySound = (score: Score) => {
-    socket.emit("play", {
-      room: room,
+    props.socket.emit("play", {
+      room: roomData.room,
       path: AudioFiles[score],
     });
   };
 
   useEffect(() => {
     if (initialMount.current) {
-      //initialize socket endpoint
-      socket = io(ENDPOINT);
-
-      setName(userName ?? "");
-      setRoom(userRoom ?? "");
-
-      socket.on("roomData", (data) => {
+      props.socket.on("roomData", (data) => {
         setRoomData(data);
       });
 
-      socket.on("play", ({ path }) => {
+      props.socket.on("play", ({ path }) => {
         new Audio(path).play();
       });
 
       //On back button
       window.onpopstate = () => {
-        socket.disconnect();
+        props.socket.disconnect();
       };
       return () => {
         initialMount.current = false;
       };
     }
+    // eslint-disable-next-line
   }, []);
-
-  useEffect(() => {
-    //Once name and room are set, have user join via socket
-    if (name && room) {
-      socket.emit(
-        "join",
-        { name, room, vote: INITIAL_VOTE },
-        (error: string) => {
-          if (error) {
-            navigate("/userTaken");
-          }
-        }
-      );
-    }
-  }, [name, room]);
 
   const updateUserVote = (score: Score) => {
     const user = roomData.users.find((u) => {
-      return u.name === name;
+      return u.name === props.joinData.name;
     });
     const update = { ...user, vote: score };
-    socket.emit("updateUserData", { user: update });
+    props.socket.emit("updateUserData", { user: update });
   };
 
   return (
     <>
       <div className="Room__container">
-        <TitleBar room={room} name={name} />
+        <TitleBar room={roomData.room} name={props.joinData.name} />
         <RatingsTable users={roomData.users} />
         <div className="Room__average-score-bar">
           <RatingsBar
             label={"Average"}
             score={calculateAverageScore(roomData.users)}
-            barColor={"#4dc399"}
+            barColor={APP_ACCENT_COLOR}
           />
         </div>
         <div className="Room__voting-button-grid-wrap">
@@ -163,41 +117,6 @@ const Room: React.FC = () => {
           </div>
         </div>
       </div>
-      {/* <div>
-        <div>{`Vote: ${room}`}</div>
-        <div>{`User: ${name}`}</div>
-        <h3>All Users:</h3>
-        <table>
-          <tr>
-            <th>Name</th>
-            <th>Vote</th>
-          </tr>
-          {roomData.users.map((user) => {
-            return (
-              <tr key={user.id}>
-                <td>{user.name}</td>
-                <td>{user.vote}</td>
-              </tr>
-            );
-          })}
-        </table>
-        <div className="Room__score-button-container">
-          {ScoreOptions.map((option) => {
-            return (
-              <button
-                className="Room__score-button"
-                key={option}
-                onClick={() => {
-                  updateUserVote(option);
-                  handlePlaySound(option);
-                }}
-              >
-                {option}
-              </button>
-            );
-          })}
-        </div>
-      </div> */}
     </>
   );
 };

@@ -1,23 +1,45 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Socket } from "socket.io-client";
+import { INITIAL_VOTE } from "../Constants";
 import "../styles/Join.css";
+import { JoinData, RoomData } from "../TypeDefinitions";
 
 interface JoinProps {
-  userTaken: boolean;
+  setJoinData: (data: JoinData) => void;
+  socket: Socket;
 }
 
-const Join: React.FC<JoinProps> = ({ userTaken }) => {
-  const [name, setName] = useState("");
-  const [room, setRoom] = useState("");
+const Join: React.FC<JoinProps> = (props) => {
+  const [name, setName] = useState<string>("");
+  const [room, setRoom] = useState<string>("");
+  const [roomData, setRoomData] = useState<RoomData>();
+  const [userTaken, setUserTaken] = useState<boolean>(false);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (roomData) {
+      props.setJoinData({ name: name, roomData: roomData });
+    }
+  }, [roomData]);
 
   const joinRoom = (event?: React.KeyboardEvent<HTMLInputElement>) => {
     if (!name || !room) {
       if (event) event.preventDefault();
       return;
     }
-    navigate(`/room/${name}/${room}`);
+    //Check if name is already taken for that room
+    props.socket.emit(
+      "join",
+      { name, room, vote: INITIAL_VOTE },
+      (error: string) => {
+        if (error) {
+          setUserTaken(true);
+          return;
+        }
+      }
+    );
+    props.socket.on("roomData", (data) => {
+      setRoomData(data);
+    });
   };
 
   return (
@@ -47,7 +69,7 @@ const Join: React.FC<JoinProps> = ({ userTaken }) => {
             onChange={(event) => {
               setRoom(event.target.value);
             }}
-            onKeyPress={(event) =>
+            onKeyDown={(event) =>
               event.key === "Enter" ? joinRoom(event) : null
             }
           />

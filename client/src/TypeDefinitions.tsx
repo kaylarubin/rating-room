@@ -1,3 +1,11 @@
+export interface RoomData {
+  room: string;
+  users: User[];
+}
+export interface JoinData {
+  name: string;
+  roomData: RoomData;
+}
 export interface User {
   id: number;
   name: string;
