@@ -76,12 +76,12 @@ const Room: React.FC = () => {
 
   const navigate = useNavigate();
 
-  function handlePlaySound(score: Score) {
+  const handlePlaySound = (score: Score) => {
     socket.emit("play", {
       room: room,
       path: AudioFiles[score],
     });
-  }
+  };
 
   useEffect(() => {
     if (initialMount.current) {
@@ -137,11 +137,11 @@ const Room: React.FC = () => {
     <>
       <div className="Room__container">
         <TitleBar room={room} name={name} />
-        <RatingsTable users={users} />
+        <RatingsTable users={roomData.users} />
         <div className="Room__average-score-bar">
           <RatingsBar
             label={"Average"}
-            score={calculateAverageScore(users)}
+            score={calculateAverageScore(roomData.users)}
             barColor={"#4dc399"}
           />
         </div>
@@ -152,7 +152,10 @@ const Room: React.FC = () => {
                 <button
                   className="Room__score-button"
                   key={option}
-                  onClick={() => {}}
+                  onClick={() => {
+                    updateUserVote(option);
+                    handlePlaySound(option);
+                  }}
                 >
                   {option}
                 </button>

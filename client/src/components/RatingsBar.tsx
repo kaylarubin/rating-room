@@ -3,7 +3,7 @@ import "../styles/RatingsBar.css";
 import { ScoreOptions } from "../Constants";
 import { useEffect, useState } from "react";
 
-const MAX_SCORE = ScoreOptions.length;
+const MAX_SCORE = ScoreOptions.length - 1;
 const UNDEFINED_WIDTH = "0%";
 const RATING_BAR_BORDER = "1px #646161 solid";
 

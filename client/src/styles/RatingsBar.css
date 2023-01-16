@@ -19,6 +19,7 @@
 
 .RatingBar__inner-bar {
   background-color: grey;
+  transition: width 1s ease-out 0s;
 }
 
 .RatingBar__username {
