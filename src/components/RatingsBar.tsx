@@ -15,6 +15,7 @@ interface Props {
   label: string;
   score: number;
   barColor?: string;
+  scoreColor?: string;
 }
 
 export const RatingsBar: React.FC<Props> = (props) => {
@@ -37,7 +38,9 @@ export const RatingsBar: React.FC<Props> = (props) => {
           }}
         ></div>
       </div>
-      <div className="RatingBar__score">{props.score}</div>
+      <div className="RatingBar__score" style={{ color: props.scoreColor }}>
+        {props.score}
+      </div>
     </div>
   );
 };

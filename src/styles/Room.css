@@ -5,18 +5,24 @@
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: #1e1e1e;
+  background-image: linear-gradient(to bottom right, #1e1e1e, #1d252c);
 }
 .Room__voting-button-grid-wrap {
   display: flex;
   justify-content: center;
+  width: 100%;
+}
+
+.Room__score-button.selected {
+  border: 2px solid #4dc399;
+  background: linear-gradient(#41564f, #9198e500);
 }
 
 .Room__score-button {
   width: 7rem;
   height: 7rem;
-  background-color: #1e1e1e;
-  border: 2px #4dc399 solid;
+  background-color: #ffffff14;
+  border: none;
   font-size: 3rem;
   margin: 1rem;
   border-radius: 50%;
@@ -37,9 +43,57 @@
   justify-content: center;
 }
 
-@media (max-width: 870px) {
+.Room__voting-buttons-container {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1600px) {
   .Room__score-button {
     width: 6rem;
     height: 6rem;
+  }
+}
+
+@media (max-width: 1350px) {
+  .Room__score-button {
+    width: 5rem;
+    height: 5rem;
+    font-size: 32px;
+  }
+  .Room__voting-buttons-container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1200px) {
+  .Room__voting-buttons-container {
+    display: grid;
+    width: 65%;
+    grid-template-columns: repeat(6, 1fr);
+    justify-items: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 750px) {
+  .Room__voting-buttons-container {
+    display: grid;
+    width: 50%;
+    grid-template-columns: repeat(4, 1fr);
+    justify-items: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 450px) {
+  .Room__voting-buttons-container {
+    display: grid;
+    width: 50%;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
   }
 }

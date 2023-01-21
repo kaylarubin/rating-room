@@ -48,6 +48,7 @@ interface Props {
 
 const Room: React.FC<Props> = (props) => {
   const [roomData, setRoomData] = useState<RoomData>(props.joinData.roomData);
+  const [selectedScore, setSelectedScore] = useState<number>(0);
   const initialMount = useRef(true);
 
   const handlePlaySound = (score: Score) => {
@@ -79,6 +80,7 @@ const Room: React.FC<Props> = (props) => {
   }, []);
 
   const updateUserVote = (score: Score) => {
+    setSelectedScore(score);
     const user = roomData.users.find((u) => {
       return u.name === props.joinData.name;
     });
@@ -96,6 +98,7 @@ const Room: React.FC<Props> = (props) => {
             label={"Average"}
             score={calculateAverageScore(roomData.users)}
             barColor={APP_ACCENT_COLOR}
+            scoreColor={APP_ACCENT_COLOR}
           />
         </div>
         <div className="Room__voting-button-grid-wrap">
@@ -103,7 +106,9 @@ const Room: React.FC<Props> = (props) => {
             {ScoreOptions.map((option) => {
               return (
                 <button
-                  className="Room__score-button"
+                  className={`Room__score-button ${
+                    selectedScore === option ? "selected" : ""
+                  }`}
                   key={option}
                   onClick={() => {
                     updateUserVote(option);
