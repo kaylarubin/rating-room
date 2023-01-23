@@ -19,11 +19,11 @@
 }
 
 .Room__score-button {
-  width: 7rem;
-  height: 7rem;
+  width: 5rem;
+  height: 5rem;
   background-color: #ffffff14;
   border: none;
-  font-size: 3rem;
+  font-size: 32px;
   margin: 1rem;
   border-radius: 50%;
   color: white;
@@ -37,7 +37,7 @@
 }
 
 .Room__average-score-bar {
-  padding-top: 2rem;
+  padding-top: 1.5rem;
   display: flex;
   margin-right: 2rem;
   justify-content: center;
@@ -50,18 +50,12 @@
   justify-content: center;
 }
 
-@media (max-width: 1600px) {
+@media (max-width: 1470px) {
   .Room__score-button {
-    width: 6rem;
-    height: 6rem;
-  }
-}
-
-@media (max-width: 1350px) {
-  .Room__score-button {
-    width: 5rem;
-    height: 5rem;
-    font-size: 32px;
+    width: 4.5rem;
+    height: 4.5rem;
+    font-size: 28px;
+    margin: 0.5rem;
   }
   .Room__voting-buttons-container {
     width: 100%;
@@ -71,7 +65,7 @@
 @media (max-width: 1200px) {
   .Room__voting-buttons-container {
     display: grid;
-    width: 65%;
+    width: 60%;
     grid-template-columns: repeat(6, 1fr);
     justify-items: center;
     align-items: center;

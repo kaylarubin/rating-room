@@ -5,7 +5,7 @@
   width: 50vw;
 }
 .RatingBar__base-bar {
-  height: 2rem;
+  height: 1.4rem;
   border-radius: 1rem;
 }
 
@@ -14,7 +14,7 @@
   grid-column-start: 1;
   background-color: #0a0909;
   display: flex;
-  align-self: center;
+  align-self: end;
 }
 
 .RatingBar__inner-bar {
@@ -23,10 +23,12 @@
 }
 
 .RatingBar__username {
+  position: relative;
+  bottom: -6px;
   color: white;
   display: flex;
   align-items: flex-end;
-  font-size: 24px;
+  font-size: 20px;
   margin-left: 1rem;
   font-family: "Montserrat";
 }
@@ -35,6 +37,6 @@
   color: white;
   display: flex;
   align-items: center;
-  font-size: 2.5rem;
+  font-size: 28px;
   margin-left: 1rem;
 }
