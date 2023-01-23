@@ -7,7 +7,7 @@ export interface JoinData {
   roomData: RoomData;
 }
 export interface User {
-  id: number;
+  id: string;
   name: string;
   room: string;
   vote: number;
