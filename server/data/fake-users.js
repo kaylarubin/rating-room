@@ -1,0 +1,87 @@
+const fake_users = [
+  {
+    id: "4pZwQ40YlzqexL3n4yq1", //socket.id
+    name: "sapling",
+    room: "testroom",
+    vote: 0,
+    icon: "../assets/jpg/18-waze.jpg",
+  },
+  {
+    id: "yF9OEJwE4C8ECigSMSq6",
+    name: "Fronixel",
+    room: "testroom",
+    vote: 5,
+    icon: "../assets/jpg/18-waze.jpg",
+  },
+  {
+    id: "FZZr7Y1JRp9yW7XeCK47",
+    name: "BuffMercy",
+    room: "testroom",
+    vote: 3,
+    icon: "../assets/jpg/18-waze.jpg",
+  },
+  {
+    id: "tGEHuRWhyB1qFRN7r6ST",
+    name: "lemon-cello",
+    room: "testroom",
+    vote: 4,
+    icon: "../assets/jpg/18-waze.jpg",
+  },
+  {
+    id: "uTYgqwrv2keB4i6w9BcC",
+    name: "KurisuSavior",
+    room: "testroom",
+    vote: 8,
+    icon: "../assets/jpg/18-waze.jpg",
+  },
+  {
+    id: "2K5T4FwB3uTmxU3SjFOu",
+    name: "Trellipit",
+    room: "testroom",
+    vote: 7,
+    icon: "../assets/jpg/18-waze.jpg",
+  },
+  {
+    id: "iJS0Y7opSFbQkmExHfAi",
+    name: "UpperRosa",
+    room: "testroom",
+    vote: 10,
+    icon: "../assets/jpg/18-waze.jpg",
+  },
+  {
+    id: "zgeym5RAIma4pSlyefJ4",
+    name: "Dudesara",
+    room: "testroom",
+    vote: 1,
+    icon: "../assets/jpg/18-waze.jpg",
+  },
+  {
+    id: "TEbY7wJXS84lYwgy8TIZ",
+    name: "curry",
+    room: "testroom",
+    vote: 2,
+    icon: "../assets/jpg/18-waze.jpg",
+  },
+  {
+    id: "KUvcAOuKP161wxEAY3ml",
+    name: "Fixneat",
+    room: "testroom",
+    vote: 6,
+    icon: "../assets/jpg/18-waze.jpg",
+  },
+  {
+    id: "w9w1oGrLOoLp6j7ASQiT",
+    name: "Smugal",
+    room: "testroom",
+    vote: 4,
+    icon: "../assets/jpg/18-waze.jpg",
+  },
+  {
+    id: "lJCPqfyfVprJt9pp5jfN",
+    name: "HiVikings",
+    room: "testroom",
+    vote: 9,
+    icon: "../assets/jpg/18-waze.jpg",
+  },
+];
+module.exports = { fake_users };
