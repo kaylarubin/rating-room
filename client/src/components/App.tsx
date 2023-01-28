@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { io } from "socket.io-client";
-import Join from "./components/Join";
-import Room from "./components/Room";
-import { ENDPOINT } from "./Constants";
-import { JoinData } from "./TypeDefinitions";
+import Join from "./Join";
+import Room from "./Room";
+import { ENDPOINT } from "../Constants";
+import { JoinData } from "../TypeDefinitions";
 
 const socket = io(ENDPOINT);
 

@@ -19,6 +19,8 @@ import { Score, User, RoomData, JoinData } from "../TypeDefinitions";
 import { RatingsBar } from "./RatingsBar";
 import { APP_ACCENT_COLOR, ScoreOptions } from "../Constants";
 
+import testIcon from "../assets/jpg/18-waze.jpg";
+
 const calculateAverageScore = (users: User[]) => {
   const totalUsers = users.length;
   const scoresSum = users.reduce(function (acc, obj) {
@@ -91,7 +93,11 @@ const Room: React.FC<Props> = (props) => {
   return (
     <>
       <div className="Room__container">
-        <TitleBar room={roomData.room} name={props.joinData.name} />
+        <TitleBar
+          room={roomData.room}
+          name={props.joinData.name}
+          icon={testIcon}
+        />
         <RatingsTable users={roomData.users} />
         <div className="Room__average-score-bar">
           <RatingsBar

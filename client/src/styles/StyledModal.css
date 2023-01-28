@@ -1,0 +1,19 @@
+.StyledModal__container {
+  padding: 1rem;
+  background-color: #1a1a1d;
+  border: 2px hsl(159, 50%, 53%) solid;
+  border-radius: 5px;
+}
+
+.StyledModal__exit-button {
+  text-align: end;
+  color: white;
+  font-weight: bold;
+  font-family: "Montserrat";
+  font-size: 18px;
+}
+
+.StyledModal__exit-button:hover {
+  color: hsl(159, 50%, 53%);
+  cursor: pointer;
+}

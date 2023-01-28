@@ -1,9 +1,9 @@
-import testIcon from "../assets/jpg/18-waze.jpg";
 import "../styles/TitleBar.css";
 
 interface Props {
-  room: string;
-  name: string;
+  room?: string;
+  name?: string;
+  icon?: string;
 }
 
 export const TitleBar: React.FC<Props> = (props) => {
@@ -15,7 +15,7 @@ export const TitleBar: React.FC<Props> = (props) => {
       </div>
       <div className="TitleBar__user-info">
         <p className="TitleBar__user-info-name">{props.name}</p>
-        <img className="TitleBar__user-info-icon" src={testIcon} />
+        <img className="TitleBar__user-info-icon" src={props.icon} />
       </div>
     </div>
   );
