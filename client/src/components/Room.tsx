@@ -97,6 +97,7 @@ const Room: React.FC<Props> = (props) => {
           room={roomData.room.name}
           name={props.joinData.username}
           icon={testIcon}
+          roomCode={roomData.room.code}
         />
         <RatingsTable users={roomData.users} />
         <div className="Room__average-score-bar">
