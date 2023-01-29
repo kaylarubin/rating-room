@@ -1,17 +1,25 @@
-export interface RoomData {
-  room: string;
-  users: User[];
-}
-export interface JoinData {
-  name: string;
-  roomData: RoomData;
-}
 export interface User {
   id: string;
   name: string;
   room: string;
   vote: number;
   icon: string;
+}
+
+export interface Room {
+  name: string;
+  code: string;
+}
+export interface RoomData {
+  room: Room;
+  users: User[];
+}
+export interface JoinData {
+  username: string;
+  roomData: RoomData;
+}
+export interface SocketResponse {
+  status: string;
 }
 
 export enum Score {

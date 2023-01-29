@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Socket } from "socket.io-client";
-import { INITIAL_VOTE } from "../Constants";
 import "../styles/Join.css";
-import { JoinData, RoomData } from "../TypeDefinitions";
+import { JoinData, SocketResponse } from "../TypeDefinitions";
 import { TitleBar } from "./TitleBar";
 import { StyledModal } from "./StyledModal";
 import { SimplePrompt } from "./SimplePrompt";
+
+const ErrorMessages = {
+  USER_TAKEN: "That name is already taken for that room.",
+  ROOM_NOT_FOUND: "No room found for that code.",
+};
 
 interface JoinProps {
   setJoinData: (data: JoinData) => void;
@@ -13,38 +17,57 @@ interface JoinProps {
 }
 
 const Join: React.FC<JoinProps> = (props) => {
-  const [name, setName] = useState<string>("");
-  const [room, setRoom] = useState<string>("");
-  const [roomData, setRoomData] = useState<RoomData>();
-  const [userTaken, setUserTaken] = useState<boolean>(false);
+  const [username, setUsername] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>();
   const [joinModalOpened, setJoinModalOpened] = useState<boolean>(false);
   const [createModalOpened, setCreateModalOpened] = useState<boolean>(false);
 
-  useEffect(() => {
-    if (roomData) {
-      props.setJoinData({ name: name, roomData: roomData });
-    }
-  }, [roomData]);
+  const nameActive = () => username !== "";
 
-  const joinRoom = (event?: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!name || !room) {
-      if (event) event.preventDefault();
-      return;
-    }
-    //Check if name is already taken for that room
+  const subscribeToRoomData = () => {
+    props.socket.on("roomData", (data) => {
+      props.setJoinData({ username: username, roomData: data });
+    });
+  };
+
+  const handleJoinRoom = (roomCode: string) => {
+    const joinRoomParams = { username: username, roomCode: roomCode };
     props.socket.emit(
-      "join",
-      { name, room, vote: INITIAL_VOTE },
-      (error: string) => {
-        if (error) {
-          setUserTaken(true);
-          return;
+      "joinRoom",
+      joinRoomParams,
+      (response: SocketResponse) => {
+        switch (response.status) {
+          case "roomNotFound":
+            setErrorMessage(ErrorMessages.ROOM_NOT_FOUND);
+            break;
+          case "userTaken":
+            setErrorMessage(ErrorMessages.USER_TAKEN);
+            break;
         }
       }
     );
-    props.socket.on("roomData", (data) => {
-      setRoomData(data);
-    });
+    subscribeToRoomData();
+    setJoinModalOpened(false);
+  };
+
+  const handleCreateRoom = (roomName: string) => {
+    const createRoomParams = { username: username, roomName: roomName };
+    props.socket.emit(
+      "createRoom",
+      createRoomParams,
+      (response: SocketResponse) => {
+        switch (response.status) {
+          case "roomExists":
+            //TODO:
+            //Handle room already exists error here
+            //But we really shouldn't have to. Create room should always succeed.
+            //Handle this on server side so this response isn't needed.
+            break;
+        }
+      }
+    );
+    subscribeToRoomData();
+    setCreateModalOpened(false);
   };
 
   return (
@@ -54,49 +77,33 @@ const Join: React.FC<JoinProps> = (props) => {
         <div className="joinOuterContainer">
           <div className="joinInnerContainer">
             <h1 className="heading">Join Room</h1>
-            {userTaken ? (
-              <div className="userTakenError">
-                That name is already taken for that room.
-              </div>
-            ) : null}
+            <div className="Join__error-message">{errorMessage}</div>
             <div>
               <input
                 placeholder="Create Username"
-                className="joinInput"
+                className="Join__input"
                 type="text"
                 onChange={(event) => {
-                  setName(event.target.value);
+                  setUsername(event.target.value);
                 }}
               />
             </div>
-            {/* <div>
-            <input
-              placeholder="Room"
-              className="joinInput mt-20"
-              type="text"
-              onChange={(event) => {
-                setRoom(event.target.value);
-              }}
-              onKeyDown={(event) =>
-                event.key === "Enter" ? joinRoom(event) : null
-              }
-            />
-          </div> */}
             <button
-              className={"Join__button mt-60"}
+              className={`Join__button mt-60 ${
+                !nameActive() ? "inactive" : ""
+              }`}
               type="submit"
               onClick={() => {
-                setJoinModalOpened(true);
-                // joinRoom();
+                nameActive() && setJoinModalOpened(true);
               }}
             >
               Join
             </button>
             <button
-              className={"Join__button"}
+              className={`Join__button ${!nameActive() ? "inactive" : ""}`}
               type="submit"
               onClick={() => {
-                setCreateModalOpened(true);
+                nameActive() && setCreateModalOpened(true);
               }}
             >
               Create Room
@@ -105,29 +112,29 @@ const Join: React.FC<JoinProps> = (props) => {
         </div>
       </div>
       <StyledModal
-        open={joinModalOpened}
-        onClose={() => {
-          setJoinModalOpened(false);
-        }}
-      >
-        <SimplePrompt
-          prompt={"What are we voting for?"}
-          placeholder={"Subject"}
-          buttonText={"Create"}
-          onButtonClick={() => setJoinModalOpened(false)}
-        />
-      </StyledModal>
-      <StyledModal
         open={createModalOpened}
         onClose={() => {
           setCreateModalOpened(false);
         }}
       >
         <SimplePrompt
+          prompt={"What are we voting for?"}
+          placeholder={"Subject"}
+          buttonText={"Create"}
+          handleEntrySubmit={handleCreateRoom}
+        />
+      </StyledModal>
+      <StyledModal
+        open={joinModalOpened}
+        onClose={() => {
+          setJoinModalOpened(false);
+        }}
+      >
+        <SimplePrompt
           prompt={"Enter Room Code"}
           placeholder={"Room Code"}
           buttonText={"Join"}
-          onButtonClick={() => setCreateModalOpened(false)}
+          handleEntrySubmit={handleJoinRoom}
         />
       </StyledModal>
     </>

@@ -55,7 +55,7 @@ const Room: React.FC<Props> = (props) => {
 
   const handlePlaySound = (score: Score) => {
     props.socket.emit("play", {
-      room: roomData.room,
+      roomCode: roomData.room.code,
       path: AudioFiles[score],
     });
   };
@@ -84,18 +84,18 @@ const Room: React.FC<Props> = (props) => {
   const updateUserVote = (score: Score) => {
     setSelectedScore(score);
     const user = roomData.users.find((u) => {
-      return u.name === props.joinData.name;
+      return u.name === props.joinData.username;
     });
     const update = { ...user, vote: score };
-    props.socket.emit("updateUserData", { user: update });
+    props.socket.emit("updateUserData", { user: update, room: roomData.room });
   };
 
   return (
     <>
       <div className="Room__container">
         <TitleBar
-          room={roomData.room}
-          name={props.joinData.name}
+          room={roomData.room.name}
+          name={props.joinData.username}
           icon={testIcon}
         />
         <RatingsTable users={roomData.users} />
